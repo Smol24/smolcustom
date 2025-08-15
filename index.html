@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Smol Custom — Ремонт и магазин страйкбольных приводов</title>
+  <meta name="description" content="Smol Custom — ремонт, тюнинг и магазин страйкбольных приводов. Онлайн-запись на ремонт и заказ товаров." />
+  <style>
+    :root{
+      --bg:#0f0f12;
+      --panel:#15151a;
+      --muted:#9aa0a6;
+      --text:#e9eaee;
+      --accent:#ff7a00;
+      --accent-2:#ffb36a;
+      --ok:#26c281;
+      --err:#ff4d4d;
+      --radius:14px;
+      --radius-sm:10px;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --maxw:1200px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:radial-gradient(1200px 700px at 70% -20%, #1a1a20 0%, #0f0f12 60%, #0d0d10 100%);
+      letter-spacing:.2px;
+    }
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+    header{
+      position:sticky; top:0; z-index:10;
+      backdrop-filter:saturate(160%) blur(8px);
+      background:linear-gradient(180deg, rgba(15,15,18,.92), rgba(15,15,18,.75));
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .nav{
+      display:flex;align-items:center;justify-content:space-between;
+      height:64px;
+    }
+    .brand{
+      display:flex;align-items:center;gap:12px;font-weight:700;letter-spacing:.6px
+    }
+    .logo{
+      width:36px;height:36px;border-radius:10px;
+      background:conic-gradient(from 210deg at 50% 50%, var(--accent), var(--accent-2), #ffddaa, var(--accent));
+      box-shadow:0 0 0 1px rgba(255,255,255,.08) inset, 0 6px 16px rgba(255,122,0,.25);
+    }
+    .menu{display:flex;gap:18px;flex-wrap:wrap}
+    .menu a{opacity:.9}
+    .cta{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:10px 16px;border-radius:12px;background:var(--accent);color:#1a1006;
+      font-weight:700;border:0;cursor:pointer;box-shadow:0 6px 20px rgba(255,122,0,.35);
+    }
+    .cta:active{transform:translateY(1px)}
+    .hero{
+      padding:48px 0 24px;
+      background:radial-gradient(800px 500px at 20% 0%, rgba(255,122,0,.12), transparent 60%);
+    }
+    .hero-inner{
+      display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center;
+    }
+    .hero h1{font-size:42px;line-height:1.15;margin:0 0 10px}
+    .hero p{color:var(--muted);margin:0 0 20px}
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+    .panel{padding:20px}
+    .badges{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 18px}
+    .badge{padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.12);opacity:.9}
+    .hero-img{
+      aspect-ratio:16/10;border-radius:var(--radius);overflow:hidden;position:relative;
+      background:linear-gradient(120deg,#1f1f25, #121217);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .hero-img img{width:100%;height:100%;object-fit:cover;display:block;opacity:.9}
+    .section{padding:28px 0 8px}
+    .section h2{margin:0 0 14px;font-size:28px}
+    .grid{display:grid;gap:16px}
+    .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .service{padding:16px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02)}
+    .service h3{margin:0 0 8px}
+    .price{font-weight:700}
+    .muted{color:var(--muted)}
+    .catalog{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+    .product{border:1px solid rgba(255,255,255,.08);border-radius:var(--radius-sm);overflow:hidden;background:#121218}
+    .product .img{background:#0d0d12;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center}
+    .product .img img{max-width:100%;max-height:100%;filter:drop-shadow(0 10px 20px rgba(0,0,0,.5))}
+    .product .body{padding:12px 14px 16px}
+    .product .title{font-weight:700;margin:0 0 6px}
+    .product .meta{display:flex;align-items:center;justify-content:space-between;gap:8px}
+    .pill{border:1px solid rgba(255,255,255,.12);padding:6px 10px;border-radius:999px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);cursor:pointer}
+    .btn:hover{background:rgba(255,255,255,.06)}
+    .btn.primary{background:var(--accent);border-color:rgba(0,0,0,.15);color:#1a1006;font-weight:700}
+    .form{display:grid;gap:12px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    input, textarea, select{
+      width:100%;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.12);
+      background:#121218;color:var(--text);outline:none;
+    }
+    textarea{min-height:120px;resize:vertical}
+    .kudos{display:flex;gap:12px;flex-wrap:wrap}
+    .kudo{flex:1 1 280px;padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02)}
+    .contact-list{display:grid;gap:8px}
+    .contact-item{display:flex;align-items:center;gap:10px}
+    .small{font-size:13px;color:var(--muted)}
+    footer{padding:20px 0 40px;color:var(--muted)}
+    .sticky-act{
+      position:fixed;right:18px;bottom:18px;z-index:20;
+      display:flex;flex-direction:column;gap:10px
+    }
+    .chip{padding:10px 14px;border-radius:999px;background:rgba(255,122,0,.15);border:1px solid rgba(255,122,0,.35);color:#ffd7b0;font-weight:700}
+    @media (max-width:900px){
+      .hero-inner{grid-template-columns:1fr}
+      .row{grid-template-columns:1fr}
+      .menu{display:none}
+    }
+    /* Table (services) */
+    table{width:100%;border-collapse:separate;border-spacing:0;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+    th,td{padding:12px 14px;text-align:left}
+    tr:nth-child(odd){background:rgba(255,255,255,.02)}
+    tr:nth-child(even){background:rgba(255,255,255,.03)}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap nav">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>Smol Custom</div>
+      </div>
+      <nav class="menu">
+        <a href="#repair">Ремонт</a>
+        <a href="#catalog">Магазин</a>
+        <a href="#reviews">Отзывы</a>
+        <a href="#contacts">Контакты</a>
+      </nav>
+      <button class="cta" onclick="scrollToId('repair')">Записаться на ремонт</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap hero-inner">
+        <div class="card panel">
+          <h1>Ремонт и тюнинг страйкбольных приводов</h1>
+          <p class="muted">Диагностика бесплатно. Честный прайс. Запчасти в наличии. Доставка по РФ.</p>
+          <div class="badges">
+            <span class="badge">Опыт 5+ лет</span>
+            <span class="badge">Электроника / тюнинг</span>
+            <span class="badge">Гарантия на работы</span>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn primary" onclick="scrollToId('repair')">Записаться</button>
+            <button class="btn" onclick="scrollToId('catalog')">Смотреть товары</button>
+          </div>
+        </div>
+        <div class="hero-img">
+          <img alt="Рабочее место мастерской" src="data:image/svg+xml;utf8,<?xml version='1.0' encoding='UTF-8'?>\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 750'>\
+<defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>\
+<stop offset='0' stop-color='%231f1f25'/><stop offset='1' stop-color='%23121217'/></linearGradient></defs>\
+<rect fill='url(%23g)' width='1200' height='750'/>\
+<g opacity='.8' stroke='%23ff7a00' stroke-width='3' fill='none'>\
+<path d='M120 540c140-220 380-340 640-370 60-6 120-7 180-3'/>\
+<path d='M140 580c180-210 420-310 680-330' opacity='.55'/>\
+</g>\
+<g fill='%23ff7a00' opacity='.9'>\
+<circle cx='860' cy='260' r='6'/><circle cx='400' cy='520' r='5'/><circle cx='980' cy='330' r='4'/>\
+</g>\
+<text x='70' y='670' font-family='monospace' font-size='34' fill='%23ffb36a' opacity='.9'>SMOL CUSTOM — AIRSOFT SERVICE & PARTS</text>\
+</svg>"/>
+        </div>
+      </div>
+    </section>
+
+    <section id="services" class="section wrap">
+      <h2>Услуги и цены</h2>
+      <div class="grid grid-3">
+        <div class="service">
+          <h3>Диагностика</h3>
+          <div class="price">Бесплатно</div>
+          <div class="muted">Осмотр, замер, рекомендации.</div>
+        </div>
+        <div class="service">
+          <h3>Полный ремонт</h3>
+          <div class="price">от 2000 ₽</div>
+          <div class="muted">Разбор, замена деталей, сборка.</div>
+        </div>
+        <div class="service">
+          <h3>Тюнинг на скорость</h3>
+          <div class="price">от 1500 ₽</div>
+          <div class="muted">Под подбор стиля игры и правил.</div>
+        </div>
+      </div>
+      <div class="card panel" style="margin-top:14px">
+        <div class="small">Полный прайс по запросу. Все работы сопровождаются фото/видео-отчётом.</div>
+      </div>
+    </section>
+
+    <section id="catalog" class="section wrap">
+      <h2>Магазин</h2>
+      <div id="catalogGrid" class="catalog"></div>
+      <div class="small" style="margin-top:8px">Нужного товара нет? Напишите нам — привезём под заказ.</div>
+    </section>
+
+    <section id="repair" class="section wrap">
+      <h2>Онлайн-запись на ремонт</h2>
+      <div class="card panel">
+        <form id="repairForm" class="form" onsubmit="return repairSubmit(event)">
+          <div class="row">
+            <div>
+              <label for="name">Имя</label>
+              <input id="name" name="name" placeholder="Ваше имя" required />
+            </div>
+            <div>
+              <label for="phone">Телефон</label>
+              <input id="phone" name="phone" placeholder="+7 ___ ___‑__‑__" required />
+            </div>
+          </div>
+          <div>
+            <label for="model">Модель привода</label>
+            <input id="model" name="model" placeholder="Например, LCT АК‑105" />
+          </div>
+          <div class="row">
+            <div>
+              <label for="service">Тип работ</label>
+              <select id="service" name="service">
+                <option>Диагностика</option>
+                <option>Полный ремонт</option>
+                <option>Тюнинг</option>
+                <option>Установка электроники</option>
+                <option>Профилактика</option>
+              </select>
+            </div>
+            <div>
+              <label for="date">Желаемая дата</label>
+              <input id="date" type="date" name="date" />
+            </div>
+          </div>
+          <div>
+            <label for="desc">Описание проблемы</label>
+            <textarea id="desc" name="desc" placeholder="Что случилось? Можно кратко. Фото приложите в чате."></textarea>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn primary" type="submit">Отправить в WhatsApp</button>
+            <button class="btn" type="button" onclick="openTelegram()">Отправить в Telegram</button>
+          </div>
+          <div class="small">Нажимая кнопку, вы перейдёте в мессенджер. Фото можно будет приложить там.</div>
+        </form>
+      </div>
+    </section>
+
+    <section id="reviews" class="section wrap">
+      <h2>Отзывы</h2>
+      <div class="kudos">
+        <div class="kudo">«Сделали быстро, FPS вырос стабильно, проводка аккуратная. Рекомендую!» — Антон</div>
+        <div class="kudo">«Подобрали пружину под правила полигона, привод стреляет мягко и ровно.» — Кирилл</div>
+        <div class="kudo">«Заказал запчасти, всё оригинал, забрал в тот же день.» — Даниил</div>
+      </div>
+    </section>
+
+    <section id="contacts" class="section wrap">
+      <h2>Контакты</h2>
+      <div class="grid grid-2">
+        <div class="card panel">
+          <div class="contact-list">
+            <div class="contact-item">📞 <a id="phoneLink" href="tel:+79011491062">+7 (901) 149‑10‑62</a></div>
+            <div class="contact-item">💬 <a id="waLink" href="https://wa.me/79011491062" target="_blank" rel="noopener">WhatsApp</a></div>
+            <div class="contact-item">✈️ <a id="tgLink" href="https://t.me/smol_custom" target="_blank" rel="noopener">@smol_custom</a></div>
+            <div class="contact-item">📍 Екатеринбург, Россия</div>
+            <div class="small">График: ежедневно 10:00–20:00</div>
+          </div>
+        </div>
+        <div class="card panel">
+          <div class="small">Карта (опционально): вставьте iframe Яндекс/Google карт с адресом мастерской.</div>
+          <!-- Пример (замените src на свой):
+          <iframe src="https://yandex.ru/map-widget/v1/?um=..." width="100%" height="250" style="border:0;border-radius:10px"></iframe>
+          -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    <div class="small">© <span id="year"></span> Smol Custom. Все права защищены.</div>
+  </footer>
+
+  <div class="sticky-act">
+    <a class="chip" href="#catalog">Магазин</a>
+    <a class="chip" href="#repair">Ремонт</a>
+  </div>
+
+  <script>
+    // === НАСТРОЙКИ ===
+    // Телефон WhatsApp без "+", только цифры (можно заменить на свой)
+    const WHATSAPP_NUMBER = "79011491062";
+    // Ник Telegram без @
+    const TELEGRAM_USERNAME = "smol_custom";
+
+    // Каталог товаров: добавляйте/редактируйте позиции ниже
+    const PRODUCTS = [
+      {
+        title: "АК‑105 LCT (б/у, отличное состояние)",
+        price: 28000,
+        image: placeholderGun("#ff7a00")
+      },
+      {
+        title: "Мотор High‑Torque 12В",
+        price: 4900,
+        image: placeholderGun("#ffb36a")
+      },
+      {
+        title: "Шестерни стальные 18:1 (комплект)",
+        price: 3500,
+        image: placeholderGear()
+      },
+      {
+        title: "MOSFET-блок Genesis Samurai",
+        price: 8200,
+        image: placeholderBoard()
+      }
+    ];
+
+    // === ЛОГИКА ===
+    function scrollToId(id){
+      const el = document.getElementById(id);
+      if(el){ el.scrollIntoView({behavior:"smooth", block:"start"}); }
+    }
+
+    function priceFmt(n){
+      return new Intl.NumberFormat("ru-RU").format(n) + " ₽";
+    }
+
+    function renderCatalog(){
+      const grid = document.getElementById("catalogGrid");
+      grid.innerHTML = "";
+      PRODUCTS.forEach((p, idx)=>{
+        const card = document.createElement("div");
+        card.className = "product";
+        card.innerHTML = `
+          <div class="img"><img alt="" src="${p.image}"></div>
+          <div class="body">
+            <div class="title">${p.title}</div>
+            <div class="meta">
+              <div class="pill">${priceFmt(p.price)}</div>
+              <button class="btn primary" onclick="orderProduct(${idx})">Заказать</button>
+            </div>
+          </div>`;
+        grid.appendChild(card);
+      });
+    }
+
+    function orderProduct(index){
+      const p = PRODUCTS[index];
+      const text = `Здравствуйте! Хочу заказать: ${p.title} — ${priceFmt(p.price)}`;
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+      window.open(url, "_blank");
+    }
+
+    function repairSubmit(e){
+      e.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const model = document.getElementById("model").value.trim();
+      const service = document.getElementById("service").value;
+      const date = document.getElementById("date").value;
+      const desc = document.getElementById("desc").value.trim();
+
+      const parts = [
+        `Заявка на ремонт`,
+        `Имя: ${name}`,
+        `Телефон: ${phone}`,
+        model ? `Модель: ${model}` : null,
+        `Работа: ${service}`,
+        date ? `Желаемая дата: ${date}` : null,
+        desc ? `Описание: ${desc}` : null
+      ].filter(Boolean);
+
+      const text = parts.join("%0A");
+      const wa = `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
+      window.open(wa, "_blank");
+      return false;
+    }
+
+    function openTelegram(){
+      const name = (document.getElementById("name")?.value || "").trim();
+      const model = (document.getElementById("model")?.value || "").trim();
+      const service = (document.getElementById("service")?.value || "");
+      const desc = (document.getElementById("desc")?.value || "").trim();
+      const text = `Здравствуйте! Заявка на ремонт.%0AИмя: ${encodeURIComponent(name)}%0AМодель: ${encodeURIComponent(model)}%0AРабота: ${encodeURIComponent(service)}%0AОписание: ${encodeURIComponent(desc)}`;
+      const tg = `https://t.me/${TELEGRAM_USERNAME}?start=smol`;
+      // Откроем профиль + тексты пользователь вставит вручную (ограничение Telegram без бота)
+      window.open(tg, "_blank");
+      setTimeout(()=>alert("Сообщение сформировано. Вставьте текст в Telegram чате:\n\n" + decodeURIComponent(text.replace(/%0A/g, "\n"))), 300);
+    }
+
+    // === Плейсхолдеры изображений (SVG) ===
+    function placeholderGun(color="#ff7a00"){
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'>
+        <defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>
+          <stop offset='0' stop-color='#1a1a22'/><stop offset='1' stop-color='#0f0f14'/>
+        </linearGradient></defs>
+        <rect width='400' height='300' fill='url(%23g)'/>
+        <g fill='none' stroke='${color}' stroke-width='6' opacity='.9'>
+          <path d='M40 160h240l40-20 20 20H360' />
+          <path d='M130 160l10 40 30 0' opacity='.7'/>
+        </g>
+        <text x='20' y='280' font-family='monospace' font-size='18' fill='${color}' opacity='.9'>SMOL CUSTOM</text>
+      </svg>`;
+      return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+    }
+    function placeholderGear(){
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'>
+        <defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>
+          <stop offset='0' stop-color='#1a1a22'/><stop offset='1' stop-color='#0f0f14'/>
+        </linearGradient></defs>
+        <rect width='400' height='300' fill='url(%23g)'/>
+        <g fill='none' stroke='%23ffb36a' stroke-width='6' opacity='.95'>
+          <circle cx='200' cy='150' r='60'/>
+          <circle cx='200' cy='150' r='24'/>
+          <path d='M200 70v30M200 230v-30M270 150h-30M160 150h-30'/>
+        </g>
+      </svg>`;
+      return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+    }
+    function placeholderBoard(){
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'>
+        <defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>
+          <stop offset='0' stop-color='#1a1a22'/><stop offset='1' stop-color='#0f0f14'/>
+        </linearGradient></defs>
+        <rect width='400' height='300' fill='url(%23g)'/>
+        <rect x='60' y='60' width='280' height='180' rx='12' fill='none' stroke='%23ff7a00' stroke-width='6'/>
+        <g stroke='%23ff7a00' stroke-width='4'>
+          <path d='M90 100h60v40H90z'/>
+          <path d='M170 100h120M170 120h120M170 140h120' opacity='.7'/>
+        </g>
+      </svg>`;
+      return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+    }
+
+    // Инициализация
+    renderCatalog();
+    document.getElementById("year").textContent = new Date().getFullYear();
+    document.getElementById("waLink").href = `https://wa.me/${WHATSAPP_NUMBER}`;
+    document.getElementById("tgLink").href = `https://t.me/${TELEGRAM_USERNAME}`;
+    document.getElementById("phoneLink").href = `tel:+${WHATSAPP_NUMBER}`;
+
+    // Microdata (LocalBusiness)
+    const business = {
+      "@context":"https://schema.org",
+      "@type":"LocalBusiness",
+      "name":"Smol Custom",
+      "address": {"@type":"PostalAddress","addressLocality":"Екатеринбург","addressCountry":"RU"},
+      "telephone":"+7 901 149-10-62",
+      "areaServed":"RU",
+      "url": window.location.href
+    };
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.textContent = JSON.stringify(business);
+    document.head.appendChild(script);
+  </script>
+</body>
+</html>
